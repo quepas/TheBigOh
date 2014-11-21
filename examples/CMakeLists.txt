@@ -1,2 +1,2 @@
-add_executable(Test src/test.cpp)
-target_link_libraries(Test LINK_PUBLIC TheBigOh)
+add_executable(Examples src/test.cpp)
+target_link_libraries(Examples LINK_PUBLIC TheBigOh)
