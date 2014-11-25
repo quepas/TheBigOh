@@ -87,5 +87,5 @@ CMakeFiles/
 CMakeCache.txt
 
 # external libs
-lib_external/include/*.h
-lib_external/include/*.hpp
+external/include/*.h
+external/include/*.hpp
