@@ -29,5 +29,4 @@ void ExclusiveAssign(T& a, T expr_a, T& b, T expr_b)
 }
 
 }}
-
 // ~~ oh::helper::

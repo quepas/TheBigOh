@@ -1,7 +1,6 @@
 #include "math/fibonacci.hpp"
 #include "helper/manipulate.hpp"
 
-using oh::helper::Swap;
 using oh::helper::ExclusiveAssign;
 
 namespace oh {
