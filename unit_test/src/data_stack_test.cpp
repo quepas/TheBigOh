@@ -12,21 +12,26 @@ TEST_CASE("Fixed-size stack operations") {
     stack.Push(1);
     stack.Push(2);
     stack.Push(3);
+    REQUIRE(stack.Top() == 3);
     stack.Push(4);
     stack.Push(5);
     REQUIRE(stack.Size() == 5);
     stack.Push(6);
+    REQUIRE(stack.Top() == 5);
     REQUIRE(stack.Size() == 5);
     REQUIRE(stack.Pop() == 5);
     REQUIRE(stack.Size() == 4);
     REQUIRE(stack.Pop() == 4);
     REQUIRE(stack.Size() == 3);
+    REQUIRE(stack.Top() == 3);
     stack.Push(7);
     REQUIRE(stack.Size() == 4);
+    REQUIRE(stack.Top() == 7);
     REQUIRE(stack.Pop() == 7);
     REQUIRE(stack.Pop() == 3);
     stack.Clear();
     REQUIRE(stack.Size() == 0);
     REQUIRE(stack.Pop() == 0);
+    REQUIRE(stack.Top() == 0);
   }
 }

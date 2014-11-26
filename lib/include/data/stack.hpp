@@ -14,6 +14,7 @@ public:
 
   void Push(T element);
   T Pop();
+  T Top();
   bool IsEmpty() const { return size_ == 0; }
   unsigned Size() const { return size_; }
   void Clear();
@@ -44,6 +45,13 @@ T Stack<T>::Pop()
 {
   if (IsEmpty()) return T();
   return data_[--size_];
+}
+
+template<typename T>
+T oh::data::Stack<T>::Top()
+{
+  if (IsEmpty()) return T();
+  return data_[size_ - 1];
 }
 
 template<typename T>
