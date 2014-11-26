@@ -5,7 +5,7 @@ using oh::data::Stack;
 
 TEST_CASE("Fixed-size stack operations") {
   SECTION("Basic stack operations") {
-    Stack<int> stack(5);
+    Stack<int, 5> stack;
 
     REQUIRE(stack.IsEmpty());
     REQUIRE(stack.Size() == 0);

@@ -6,60 +6,51 @@ namespace oh {
 /*
  *  Stack implemented with fixed-size array
  */
-template<typename T>
+template<typename T, unsigned MAX_SIZE>
 class Stack
 {
 public:
-  Stack(unsigned capacity);
+  Stack() : size_(0) {}
 
   void Push(T element);
   T Pop();
-  T Top();
+  T Top() const;
   bool IsEmpty() const { return size_ == 0; }
   unsigned Size() const { return size_; }
   void Clear();
   unsigned capacity() const { return capacity_; }
 
 private:
-  unsigned capacity_;
+  unsigned capacity_ = MAX_SIZE;
   unsigned size_;
-  T* data_;
+  T data_[MAX_SIZE];
 };
 
-template<typename T>
-Stack<T>::Stack(unsigned stack_capacity)
-  : capacity_(stack_capacity), size_(0)
-{
-  data_ = new T[capacity_];
-}
-
-template<typename T>
-void Stack<T>::Push(T element)
+template<typename T, unsigned MAX_SIZE>
+void Stack<T, MAX_SIZE>::Push(T element)
 {
   if (size_ == capacity_) return;
   data_[size_++] = element;
 }
 
-template<typename T>
-T Stack<T>::Pop()
+template<typename T, unsigned MAX_SIZE>
+T Stack<T, MAX_SIZE>::Pop()
 {
   if (IsEmpty()) return T();
   return data_[--size_];
 }
 
-template<typename T>
-T oh::data::Stack<T>::Top()
+template<typename T, unsigned MAX_SIZE>
+T Stack<T, MAX_SIZE>::Top() const
 {
   if (IsEmpty()) return T();
   return data_[size_ - 1];
 }
 
-template<typename T>
-void Stack<T>::Clear()
+template<typename T, unsigned MAX_SIZE>
+void Stack<T, MAX_SIZE>::Clear()
 {
   size_ = 0;
-  delete data_;
-  data_ = new T[capacity_];
 }
 
 }}
