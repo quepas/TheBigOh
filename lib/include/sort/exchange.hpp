@@ -7,14 +7,14 @@ namespace oh {
   namespace sort {
 
 template<typename T>
-void InsertionSort(unsigned size, T* data);
+void ExchangeSort(unsigned size, T* data);
 template<typename T, size_t N>
-void InsertionSort(T (&data)[N]);
+void ExchangeSort(T (&data)[N]);
 
 // --------------------------------------------------------------------- //
 
 template<typename T>
-void InsertionSort(unsigned size, T* data)
+void ExchangeSort(unsigned size, T* data)
 {
   for (unsigned idx = 0; idx < size - 1; ++idx) {
     for (unsigned jdx = idx + 1; jdx < size; ++jdx) {
@@ -24,9 +24,9 @@ void InsertionSort(unsigned size, T* data)
 }
 
 template<typename T, size_t N>
-void InsertionSort(T (&data)[N])
+void ExchangeSort(T (&data)[N])
 {
-  InsertionSort(N, data);
+  ExchangeSort(N, data);
 }
 
 }}
