@@ -1,6 +1,6 @@
 #pragma once
 
-#include <exception>
+#include <iostream>
 
 namespace oh {
   namespace data {
@@ -54,10 +54,10 @@ void BinaryTree<T>::Print(Node* node, int level)
 {
   if (node != nullptr) {
     Print(node->left, ++level);
-    for (unsigned i = 0; i < level; ++i) {
+    for (int i = 0; i < level; ++i) {
       std::cout << "--";
     }
-    std::cout << node->value << std::endl;
+    //std::cout << node->value << std::endl;
     Print(node->right, ++level);
   }
 }
