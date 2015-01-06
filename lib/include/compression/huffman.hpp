@@ -15,7 +15,7 @@ public:
 
 typedef std::map<std::string, int, StringComparer> StringOccurrences;
 
-StringOccurrences CountCharsOccurrence(std::string text, int chars_group_size = 1);
+StringOccurrences CountCharsOccurrence(std::string text, int sequence_length = 1);
 
 }}
 // ~~ oh::compression
