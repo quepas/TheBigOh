@@ -2,7 +2,6 @@
 #include <catch.hpp>
 
 using oh::compression::CountCharsOccurrence;
-using oh::compression::FindTwoMinOccurrence;
 
 TEST_CASE("Counting occurrence of chars in text") {
   SECTION("Standard text with single-char sequences") {
@@ -17,37 +16,21 @@ TEST_CASE("Counting occurrence of chars in text") {
     REQUIRE(occurrences["r"] == 1);
     REQUIRE(occurrences["e"] == 1);
     REQUIRE(occurrences["x"] == 1);
-    REQUIRE(FindMinOccurrence(occurrences) == " ");
-    auto min_occurrences = FindTwoMinOccurrence(occurrences);
-    REQUIRE(min_occurrences.first == " ");
-    REQUIRE(min_occurrences.second == "S");
     auto occurrences_2 = CountCharsOccurrence("Ala lala laall");
     REQUIRE(occurrences_2.size() == 4);
     REQUIRE(occurrences_2["A"] == 1);
     REQUIRE(occurrences_2["a"] == 5);
     REQUIRE(occurrences_2["l"] == 6);
     REQUIRE(occurrences_2[" "] == 2);
-    REQUIRE(FindMinOccurrence(occurrences_2) == "A");
-    auto min_occurrences_2 = FindTwoMinOccurrence(occurrences_2);
-    REQUIRE(min_occurrences_2.first == "A");
-    REQUIRE(min_occurrences_2.second == " ");
   }
 
   SECTION("Non-standard crazy text with single char sequences") {
     auto occurrences_1 = CountCharsOccurrence("");
     REQUIRE(occurrences_1.empty());
-    REQUIRE(FindMinOccurrence(occurrences_1) == "");
-    auto min_occurrences_1 = FindTwoMinOccurrence(occurrences_1);
-    REQUIRE(min_occurrences_1.first == "");
-    REQUIRE(min_occurrences_1.second == "");
     auto occurrences_2 = CountCharsOccurrence(" ");
     REQUIRE(occurrences_2.size() == 1);
     REQUIRE_NOTHROW(occurrences_2[" "]);
     REQUIRE(occurrences_2[" "] == 1);
-    REQUIRE(FindMinOccurrence(occurrences_2) == " ");
-    auto min_occurrences_2 = FindTwoMinOccurrence(occurrences_2);
-    REQUIRE(min_occurrences_2.first == " ");
-    REQUIRE(min_occurrences_2.second == "");
     auto occurrences_3 = CountCharsOccurrence(" $%&\t&$\n\t");
     REQUIRE(occurrences_3.size() == 6);
     REQUIRE(occurrences_3[" "] == 1);

@@ -1,13 +1,16 @@
 #include "compression/huffman.hpp"
 
 #include <algorithm>
+#include <cassert>
+#include <deque>
 
-using oh::data::BinaryTree;
+using std::deque;
 using std::find;
 using std::pair;
 using std::map;
 using std::make_pair;
 using std::string;
+using std::vector;
 
 namespace oh {
   namespace compression {
@@ -26,47 +29,40 @@ StringOccurrences CountCharsOccurrence(string text, int sequence_length /*= 1*/)
   return result;
 }
 
-pair<string, string> FindTwoMinOccurrence(StringOccurrences occurrences)
+VectorOfStringPair Huffman(StringOccurrences occurrences)
 {
-  string first_occurrence = FindMinOccurrence(occurrences);
-  occurrences.erase(first_occurrence);
-  return make_pair(first_occurrence, FindMinOccurrence(occurrences));
+  assert(occurrences.size() > 1);
+
+  vector<pair<string, int>> sorted_occurr(occurrences.begin(), occurrences.end());
+  sort(sorted_occurr.begin(), sorted_occurr.end(), pair_less_second<string, int>());
+  deque<HuffmanNode*> queue;
+
+  for (auto it = sorted_occurr.begin(); it != sorted_occurr.end(); ++it) {
+    queue.push_back(new HuffmanNode(it->first, it->second, nullptr, nullptr));
+  }
+  while(queue.size() > 1) {
+    auto p = queue.front(); queue.pop_front();
+    auto q = queue.front(); queue.pop_front();
+    HuffmanNode* node = new HuffmanNode("", p->num + q->num, p, q);
+
+    queue.push_front(node);
+    sort(queue.begin(), queue.end(), less_huffman_occurrences());
+  }
+  HuffmanNode* root = queue.front();
+  VectorOfStringPair codes;
+  PrepareHuffmanCodes(root, "", codes);
+  return codes;
 }
 
-string FindMinOccurrence(StringOccurrences occurrences)
-{
-  int min_occurrence = INT_MAX;
-  string min_str = "";
-  for (auto it = occurrences.begin(); it != occurrences.end(); ++it) {
-    if (it->second < min_occurrence) {
-      min_str = it->first;
-      min_occurrence = it->second;
-    }
+void PrepareHuffmanCodes(HuffmanNode* node, string start_code, VectorOfStringPair& codes) {
+  if (!node->left && !node->right) {
+    codes.push_back(make_pair(node->str, start_code));
+    return;
   }
-  return min_str;
-}
-
-data::BinaryTree<StringOccurrence> Huffman(StringOccurrences occurrences)
-{
-  if (occurrences.size() == 2) {
-    auto it = occurrences.begin();
-    auto first = StringOccurrence(it->first, it->second);
-    ++it;
-    auto second = StringOccurrence(it->first, it->second);
-    BinaryTree<StringOccurrence> tree(StringOccurrence("", first.occurrence + second.occurrence));
-    tree.AddLeftChild(first);
-    tree.AddRightChild(second);
-    return tree;
-  }
-
-  auto min_occurrences = FindTwoMinOccurrence(occurrences);
-  auto left = occurrences.find(min_occurrences.first);
-  auto right = occurrences.find(min_occurrences.second);
-
-  occurrences.erase(left->first);
-  occurrences.erase(right->first);
-  occurrences[left->first+right->first] = left->second + right->second;
-  auto tree = Huffman(occurrences);
+  if (node->left)
+    PrepareHuffmanCodes(node->left, start_code+"0", codes);
+  if (node->right)
+    PrepareHuffmanCodes(node->right, start_code+"1", codes);
 }
 
 }}
