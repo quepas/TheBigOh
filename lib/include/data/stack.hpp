@@ -10,7 +10,7 @@ template<typename T, unsigned MAX_SIZE>
 class Stack
 {
 public:
-  Stack() : size_(0) {}
+  Stack() : size_(0), capacity_(MAX_SIZE) {}
 
   void Push(T element);
   T Pop();
@@ -21,7 +21,7 @@ public:
   unsigned capacity() const { return capacity_; }
 
 private:
-  unsigned capacity_ = MAX_SIZE;
+  unsigned capacity_;
   unsigned size_;
   T data_[MAX_SIZE];
 };
