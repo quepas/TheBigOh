@@ -18,6 +18,7 @@ struct HuffmanNode {
 
 struct StringOccurrence
 {
+  StringOccurrence() : str(""), num(0) {}
   StringOccurrence(std::string _str, int _num)
     : str(_str), num(_num) {}
   std::string str;
@@ -52,10 +53,16 @@ public:
 typedef std::map<std::string, int, StringComparer> StringOccurrences;
 typedef std::vector<std::pair<std::string, std::string>> VectorOfStringPair;
 
-StringOccurrences CountCharsOccurrence(std::string text, int sequence_length = 1);
+void CodeText(std::string file_name, std::string text, int sequence_length = 1);
+std::string DecodeText(std::string file_name);
 
+StringOccurrences CountCharsOccurrence(std::string text, int sequence_length = 1);
 VectorOfStringPair Huffman(StringOccurrences occurrences);
 void PrepareHuffmanCodes(HuffmanNode* node, std::string start_code, VectorOfStringPair& codes);
+std::string FindMaximumHuffmanCode(const VectorOfStringPair& codes);
+std::string ReplaceCharForHuffmanCode(std::string text, const VectorOfStringPair& codes);
+int BinaryStringToULong(std::string text);
+std::string ULongToBinaryString(int number);
 
 }}
 // ~~ oh::compression
