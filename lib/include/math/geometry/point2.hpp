@@ -1,5 +1,8 @@
 #pragma once
 
+#include "math/misc.hpp"
+#include <utility>
+
 namespace oh {
   namespace math {
     namespace geometry {
@@ -30,8 +33,34 @@ struct Point2 {
   bool operator==(const Point2& point) const;
   bool operator!=(const Point2& point) const;
 
+  float PolarRadius() const;
+  float PolarAngle() const;
+  std::pair<float, float> PolarCoords() const;
+
   T x, y;
 };
+
+template<typename T>
+std::pair<float, float> Point2<T>::PolarCoords() const
+{
+  return std::make_pair(PolarRadius(), PolarAngle());
+}
+
+template<typename T>
+float Point2<T>::PolarAngle() const
+{
+  if (x > 0 && y >= 0) return atan(y/x);
+  if (x > 0 && y < 0) return atan(y/x) + 2 * PI_F;
+  if (x < 0) return atan(y/x) + PI_F;
+  if (x == 0 && y > 0) return PI_F/2.0f;
+  if (x == 0 && y < 0) return (3.0f * PI_F)/2.0f;
+}
+
+template<typename T>
+float Point2<T>::PolarRadius() const
+{
+  return sqrt(x * x + y * y);
+}
 
 template<typename T>
 Point2<T>& Point2<T>::operator/=(T scalar)
