@@ -9,11 +9,16 @@
 #include <stack>
 #include <string>
 #include <sstream>
-#include <iostream>
 
 using oh::helper::NextToTop;
+using std::ifstream;
 using std::min_element;
+using std::reverse;
+using std::rotate;
+using std::sort;
+using std::stack;
 using std::string;
+using std::stringstream;
 using std::vector;
 
 namespace oh {
@@ -61,9 +66,12 @@ struct YComparator {
   }
 };
 
-struct PolarAngleComparator {
+struct PolarAngleRelativeToP0Comparator {
+  PolarAngleRelativeToP0Comparator(Point2f _p0) : p0(_p0) {}
+  Point2f p0;
+
   bool operator()(const Point2f& p1, const Point2f& p2) {
-    return p1.PolarAngle() < p2.PolarAngle();
+    return RelativePositionOfPoints(Segment(p1, p2), p0) > 0;
   }
 };
 
@@ -75,41 +83,42 @@ vector<Point2f> ConvexHullGraham(vector<Point2f> points)
 {
   if (points.size() <= 3) return points;
   auto p0 = min_element(points.begin(), points.end(), YComparator());
-  std::rotate(points.begin(), p0, points.end());
-  std::sort(points.begin() + 1, points.end(), PolarAngleComparator());
-  auto unique_iterators = std::unique(points.begin() + 1, points.end(), EqualPolarAngleButFurtherRadius);
-  points.resize(std::distance(points.begin(), unique_iterators));
+  rotate(points.begin(), p0, points.end());
+  sort(points.begin() + 1, points.end(), PolarAngleRelativeToP0Comparator(points[0]));
+  auto unique_iterators = unique(points.begin() + 1, points.end(), EqualPolarAngleButFurtherRadius);
+  points.resize(distance(points.begin(), unique_iterators));
 
-  std::stack<Point2f> S;
+  stack<Point2f> S;
   S.push(points[0]);
   S.push(points[1]);
   S.push(points[2]);
 
   for (int i = 3; i < points.size(); ++i) {
-    while (RelativePositionOfPoints(Segment(S.top(), NextToTop(S)), points[i]) >= 0) {
+    while (RelativePositionOfPoints(Segment(S.top(), NextToTop(S)), points[i]) > 0) {
       S.pop();
     }
     S.push(points[i]);
   }
-  std::vector<Point2f> result;
+  vector<Point2f> result;
   while (!S.empty()) {
     result.push_back(S.top());
     S.pop();
   }
+  reverse(result.begin(), result.end());
   return result;
 }
 
 vector<Point2f> LoadPoints(string file_name)
 {
-  std::ifstream file_in(file_name);
-  std::vector<Point2f> points;
+  ifstream file_in(file_name);
+  vector<Point2f> points;
   if (!file_in.is_open()) return points;
 
   string line;
   float x, y;
   char c;
-  while(std::getline(file_in, line)) {
-    std::stringstream ss;
+  while(getline(file_in, line)) {
+    stringstream ss;
     ss << line;
     ss >> x >> c >> y;
     points.push_back(Point2f(x, y));
