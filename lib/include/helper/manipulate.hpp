@@ -1,5 +1,7 @@
 #pragma once
 
+#include <stack>
+
 namespace oh {
   namespace helper {
 
@@ -7,6 +9,8 @@ template<typename T>
 void Swap(T& a, T& b);
 template<typename T>
 void ExclusiveAssign(T& a, T expr_a, T& b, T expr_b);
+template<typename T>
+T NextToTop(std::stack<T> stack);
 
 // --------------------------------------------------------------------- //
 
@@ -26,6 +30,12 @@ void ExclusiveAssign(T& a, T expr_a, T& b, T expr_b)
 {
   a = expr_a;
   b = expr_b;
+}
+
+template<typename T>
+T NextToTop(std::stack<T> stack) {
+  stack.pop();
+  return stack.top();
 }
 
 }}
