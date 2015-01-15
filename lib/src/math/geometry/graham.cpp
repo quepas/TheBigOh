@@ -94,7 +94,7 @@ vector<Point2f> ConvexHullGraham(vector<Point2f> points)
   S.push(points[2]);
 
   for (int i = 3; i < points.size(); ++i) {
-    while (RelativePositionOfPoints(Segment(S.top(), NextToTop(S)), points[i]) > 0) {
+    while (RelativePositionOfPoints(Segment(S.top(), NextToTop(S)), points[i]) >= 0) {
       S.pop();
     }
     S.push(points[i]);
